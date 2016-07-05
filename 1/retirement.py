@@ -1,9 +1,10 @@
 
-"""def nesteggfixed(salary,save,growthrate,years):
+def nesteggfixed(salary,save,growthrate,years,fund):
     if(years==0):
-       return salary*save*0.01
+       fund.append(salary*save*0.01)
+       return fund
     else:
-         temp=nesteggfixed(salary,save,growthrate,years-1)*(1+0.01*growthrate)+salary*save*0.01
+         return nesteggfixed(salary,save,growthrate,years-1,fund)*(1+0.01*growthrate)+salary*save*0.01
 
 salary=10000
 save=10
@@ -11,10 +12,11 @@ growthrate=15
 years=5
 fund=list()
 temp=0.00
-nesteggfixed(salary,save,growthrate,years)"""
+nesteggfixed(salary,save,growthrate,years,fund)
+print(fund)
 
 
-def nesteggfixed(salary,save,growthrate,retirefund):
+"""def nesteggfixed(salary,save,growthrate,retirefund):
     fund=salary*save*0.01
     for i in range(0,len(growthrate)):
         fund=fund*(1+0.01*growthrate[i])+salary*save*0.01
@@ -25,4 +27,4 @@ salary=10000
 save=10
 growthrate=[3,4,5,0,3]
 retirefund=list()
-nesteggfixed(salary,save,growthrate,retirefund)
+nesteggfixed(salary,save,growthrate,retirefund)"""
