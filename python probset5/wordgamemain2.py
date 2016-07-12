@@ -10,6 +10,10 @@ hand={}
 totalscore=0
 VOWELS ="aeiou"
 CONSONANTS = "bcdfghjklmnpqrstvwxyz"
+word=list()
+n=7
+word_list=list()
+newhand={}
 
 def load_words():
     print "Loading word list from file..."
@@ -29,15 +33,14 @@ def get_frequency_dict(word):
 def playhand(hand,word_list,totalscore):
     print("these are the hand letters ")
     print(hand)
-    word=list()
     word=raw_input("tell a word")
     if word==".":
         return totalscore
     else:
-        if len(hand==1):
+        if len(hand)==1:
             return totalscore
         else:
-            isthere=is_validword(word,hand,wordlist)
+            isthere=is_validword(word,hand,word_list)
             if isthere==True :
                 score=get_word_score(word,n)
                 totalscore=totalscore+score
@@ -53,8 +56,6 @@ def update_hand(hand,word):
             del hand[i]
 
     return hand
-nex=update_hand(hand,word)
-print(nex)
 
 def is_validword(word,hand,word_list):
     if all(x in hand.keys() for x in word) and word in word_list:
@@ -65,7 +66,7 @@ def is_validword(word,hand,word_list):
 
 
 def deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES):
-    num_vowels = n / 3
+    num_vowels = n/3
     for i in range(num_vowels):
         x = VOWELS[random.randrange(0,len(VOWELS))]
         hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)
@@ -86,7 +87,7 @@ def getwordscore(word,hand):
 def playgame(word_list):
     totscore=0
     n=raw_input("enter the size of the hand")
-while True:
+    while True:
         cmd = raw_input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
         if cmd == 'n':
             hand = deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES)
