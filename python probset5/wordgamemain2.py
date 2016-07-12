@@ -66,7 +66,7 @@ def is_validword(word,hand,word_list):
 
 
 def deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES):
-    num_vowels = n/3
+    num_vowels = int(n/3)
     for i in range(num_vowels):
         x = VOWELS[random.randrange(0,len(VOWELS))]
         hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)
@@ -86,7 +86,7 @@ def getwordscore(word,hand):
 
 def playgame(word_list):
     totscore=0
-    n=raw_input("enter the size of the hand")
+    n=int(raw_input("enter the size of the hand"))
     while True:
         cmd = raw_input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
         if cmd == 'n':
