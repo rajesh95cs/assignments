@@ -8,12 +8,13 @@ SCRABBLE_LETTER_VALUES = {
 nex={}
 hand={}
 totalscore=0
+score=0
 VOWELS ="aeiou"
 CONSONANTS = "bcdfghjklmnpqrstvwxyz"
 word=list()
-n=7
 word_list=list()
 newhand={}
+
 
 def load_words():
     print "Loading word list from file..."
@@ -42,7 +43,7 @@ def playhand(hand,word_list,totalscore):
         else:
             isthere=is_validword(word,hand,word_list)
             if isthere==True :
-                score=get_word_score(word,n)
+                score=getwordscore(word,hand)
                 totalscore=totalscore+score
                 newhand=update_hand(hand,word)
             playhand(newhand,word_list,totalscore)
@@ -65,14 +66,14 @@ def is_validword(word,hand,word_list):
 
 
 
-def deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES):
-    num_vowels = int(n/3)
+def deal_hand(N,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES):
+    num_vowels=N/3
     for i in range(num_vowels):
         x = VOWELS[random.randrange(0,len(VOWELS))]
-        hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)
-    for i in range(num_vowels, n):
+        hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)+1
+    for i in range(num_vowels, N):
         x = CONSONANTS[random.randrange(0,len(CONSONANTS))]
-        hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)
+        hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)+1
     return hand
 
 def getwordscore(word,hand):
@@ -86,11 +87,11 @@ def getwordscore(word,hand):
 
 def playgame(word_list):
     totscore=0
-    n=int(raw_input("enter the size of the hand"))
+    N=int(raw_input("enter the size of the hand"))
     while True:
         cmd = raw_input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
         if cmd == 'n':
-            hand = deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES)
+            hand = deal_hand(N,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES)
             totscore=playhand(hand.copy(), word_list,totalscore)
             print(totscore)
         elif cmd == 'r':
