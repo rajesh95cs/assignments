@@ -6,18 +6,19 @@ SCRABBLE_LETTER_VALUES = {
     'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
 }
 nex={}
+hand={}
+totalscore=0
 VOWELS ="aeiou"
 CONSONANTS = "bcdfghjklmnpqrstvwxyz"
 
 def load_words():
     print "Loading word list from file..."
-    inFile = open(words.txt, 'r', 0)
-    words = []
+    inFile = open("words.txt", 'r', 0)
+    wordsa = list()
     for line in inFile:
-        words.append(line.strip().lower())
-    print "  ", len(wordlist), "words loaded."
-    return words
-
+        wordsa.append(line.strip().lower())
+    print "  ", len(wordsa), "words loaded."
+    return wordsa
 
 def get_frequency_dict(word):
     freq = {}
@@ -64,7 +65,6 @@ def is_validword(word,hand,word_list):
 
 
 def deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES):
-    hand = {}
     num_vowels = n / 3
     for i in range(num_vowels):
         x = VOWELS[random.randrange(0,len(VOWELS))]
@@ -81,23 +81,23 @@ def getwordscore(word,hand):
         temp=temp+valid[i]*hand[i]
     if cmp(valid.keys(),hand.keys())==0:
         temp=temp+50
-    print(temp)
     return temp
-getwordscore(word,hand)
 
 def playgame(word_list):
-    totalscore=0
+    totscore=0
     n=raw_input("enter the size of the hand")
 while True:
         cmd = raw_input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
         if cmd == 'n':
             hand = deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES)
-            totalscore=playhand(hand.copy(), word_list)
-            print(totalscore)
+            totscore=playhand(hand.copy(), word_list,totalscore)
+            print(totscore)
         elif cmd == 'r':
-            totalscore=playhand(hand.copy(), word_list)
-            print(totalscore)
+            totscore=playhand(hand.copy(), word_list,totalscore)
+            print(totscore)
         elif cmd == 'e':
             break
         else:
              print "Invalid command."
+word_list=load_words()
+playgame(word_list)
