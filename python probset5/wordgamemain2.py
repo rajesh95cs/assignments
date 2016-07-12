@@ -7,7 +7,6 @@ SCRABBLE_LETTER_VALUES = {
 }
 nex={}
 hand={}
-totalscore=0
 score=0
 VOWELS ="aeiou"
 CONSONANTS = "bcdfghjklmnpqrstvwxyz"
@@ -44,9 +43,11 @@ def playhand(hand,word_list,totalscore):
             isthere=is_validword(word,hand,word_list)
             if isthere==True :
                 score=getwordscore(word,hand)
+                print(score)
                 totalscore=totalscore+score
-                newhand=update_hand(hand,word)
-            playhand(newhand,word_list,totalscore)
+                print(totalscore)
+                hand=update_hand(hand,word)
+            return playhand(hand,word_list,totalscore)
 
 def update_hand(hand,word):
     num=get_frequency_dict(word)
@@ -87,6 +88,7 @@ def getwordscore(word,hand):
 
 def playgame(word_list):
     totscore=0
+    totalscore=0
     N=int(raw_input("enter the size of the hand"))
     while True:
         cmd = raw_input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
