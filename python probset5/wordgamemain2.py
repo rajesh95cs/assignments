@@ -6,11 +6,9 @@ SCRABBLE_LETTER_VALUES = {
     'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
 }
 nex={}
-hand = {'r': 1, 'a': 3, 'p': 2, 'e': 1, 't': 1, 'u':1}
-word = "rapture"
 VOWELS ="aeiou"
 CONSONANTS = "bcdfghjklmnpqrstvwxyz"
-"""
+
 def load_words():
     print "Loading word list from file..."
     inFile = open(words.txt, 'r', 0)
@@ -20,13 +18,13 @@ def load_words():
     print "  ", len(wordlist), "words loaded."
     return words
 
-"""
+
 def get_frequency_dict(word):
     freq = {}
     for x in word:
         freq[x] = freq.get(x,0) + 1
     return freq
-"""
+
 def playhand(hand,word_list,totalscore):
     print("these are the hand letters ")
     print(hand)
@@ -44,33 +42,24 @@ def playhand(hand,word_list,totalscore):
                 totalscore=totalscore+score
                 newhand=update_hand(hand,word)
             playhand(newhand,word_list,totalscore)
-"""
+
 def update_hand(hand,word):
     num=get_frequency_dict(word)
     new=num.keys()
     for i in new :
-        hand[i]=hand[i]-new[i]
+        hand[i]=hand[i]-num[i]
+        if hand[i]==0:
+            del hand[i]
 
-    print(new)
-    return new
+    return hand
 nex=update_hand(hand,word)
-print(new)
-"""
+print(nex)
+
 def is_validword(word,hand,word_list):
-    for i in len(word) :
-        flag==0
-        if word[i] in hand.keys() and hand[i]!=0:
-            flag==1
-        else :
-            print("this letter is not there in the hand")
-        if flag==0:
-            return false
-    if word in word_list :
-        print("it is a valid word ")
-        return true
-    else :
-        print("its not there in the dictionary")
-        return false
+    if all(x in hand.keys() for x in word) and word in word_list:
+        print("it is present in the hand and it is a validword")
+        return True
+    return False
 
 
 
@@ -85,12 +74,16 @@ def deal_hand(n,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES):
         hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)
     return hand
 
-def getwordscore(word,n,hand):
+def getwordscore(word,hand):
+    valid=get_frequency_dict(word)
     temp=0
     for i in word :
-        if i in hand :
-            temp=temp+(hand[i])
+        temp=temp+valid[i]*hand[i]
+    if cmp(valid.keys(),hand.keys())==0:
+        temp=temp+50
+    print(temp)
     return temp
+getwordscore(word,hand)
 
 def playgame(word_list):
     totalscore=0
@@ -108,4 +101,3 @@ while True:
             break
         else:
              print "Invalid command."
-"""
