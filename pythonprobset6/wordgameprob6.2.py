@@ -42,6 +42,9 @@ def playhand(hand,word_list,totalscore,totaltime,timelimit,enteredword):
     word=raw_input("tell a word ")
     endtime=time.time()
     subtime=endtime-starttime
+    if subtime>=timelimit :
+        print("time over to enter the letter , word not accepted")
+        return totalscore
     totaltime = totaltime+subtime
     if word in enteredword:
         print("you are cheating gameover")
