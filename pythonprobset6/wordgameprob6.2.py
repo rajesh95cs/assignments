@@ -18,6 +18,7 @@ totaltime=0
 starttime=0
 endtime=0
 subtime=0
+enteredword=list()
 
 def load_words():
     print "Loading word list from file..."
@@ -34,7 +35,7 @@ def get_frequency_dict(word):
         freq[x] = freq.get(x,0) + 1
     return freq
 
-def playhand(hand,word_list,totalscore,totaltime,timelimit):
+def playhand(hand,word_list,totalscore,totaltime,timelimit,enteredword):
     print("these are the hand letters ")
     print(hand)
     starttime=time.time()
@@ -42,13 +43,19 @@ def playhand(hand,word_list,totalscore,totaltime,timelimit):
     endtime=time.time()
     subtime=endtime-starttime
     totaltime = totaltime+subtime
-    if totaltime>=timelimit:
-        print("time is over no score provided for the previous word")
-        exceededtime=totaltime-timelimit
-        print("totaltime taken ",totaltime)
-        print("exceededtime =", exceededtime)
+    if word in enteredword:
+        print("you are cheating gameover")
         return totalscore
-    print("it took ", subtime ," seconds to get the word")
+    else :
+        if totaltime>=timelimit:
+            print("time is over no score provided for the previous word")
+            exceededtime=totaltime-timelimit
+            print("totaltime taken ",totaltime)
+            print("exceededtime =", exceededtime)
+            return totalscore
+        else:
+            print("it took ", subtime ," seconds to get the word")
+            enteredword.append(word)
     if word==".":
         return totalscore
     else:
@@ -62,7 +69,7 @@ def playhand(hand,word_list,totalscore,totaltime,timelimit):
                 totalscore=totalscore+score
                 print("totalscore= ", totalscore)
                 hand=update_hand(hand,word)
-            return playhand(hand,word_list,totalscore,totaltime,timelimit)
+            return playhand(hand,word_list,totalscore,totaltime,timelimit,enteredword)
 
 def update_hand(hand,word):
     num=get_frequency_dict(word)
@@ -105,16 +112,16 @@ def getwordscore(word,hand,subtime):
 def playgame(word_list):
     totscore=0
     totalscore=0
-    N=int(raw_input("enter the size of the hand"))
-    timelimit=int(raw_input("enter the time limit : "))
     while True:
+        timelimit=int(raw_input("enter the time limit : "))
+        N=int(raw_input("enter the size of the hand"))
         cmd = raw_input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
         if cmd == 'n':
             hand = deal_hand(N,VOWELS,CONSONANTS,SCRABBLE_LETTER_VALUES)
-            totscore=playhand(hand.copy(), word_list,totalscore,totaltime,timelimit)
+            totscore=playhand(hand.copy(), word_list,totalscore,totaltime,timelimit,enteredword)
             print(totscore)
         elif cmd == 'r':
-            totscore=playhand(hand.copy(), word_list,totalscore,totaltime,timelimit)
+            totscore=playhand(hand.copy(), word_list,totalscore,totaltime,timelimit,enteredword)
             print(totscore)
         elif cmd == 'e':
             break
