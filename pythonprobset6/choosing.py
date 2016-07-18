@@ -5,15 +5,25 @@ def is_validword(word,hand,word_list):
         return True
     return False
 
-def bestchoice(dicc,hand,word_list):
-    if len(hand.keys()) in dicc.keys():
-        maxscore=max(dicc[len(hand.keys())].keys())
-        word=dicc[len(hand.keys())][maxscore][random.randrange(0,len(dicc[len(hand.keys())][max]))]
-        if is_validword(word,hand,word_list):
+
+def bestchoice(dicc, hand, wordlen, word_list):
+    if wordlen in dicc.keys():
+        maxscore = max(dicc[wordlen].keys())
+        i = random.randrange(0, len(dicc[wordlen][maxscore]))
+        word = dicc[wordlen][maxscore][i]
+        if is_validword(word, hand, word_list):
             return word
         else:
-            bestchoice(dicc,hand,word_list)
-    else :
-        defaultword="."
-        print("sorry i dont know")
-        return defaultword            
+            del dicc[wordlen][maxscore][i]
+            if len(dicc[wordlen][maxscore]) > 0:
+                return bestchoice(dicc, hand, wordlen, word_list)
+            else:
+                del dicc[wordlen][maxscore]
+                return bestchoice(dicc, hand, wordlen, word_list)
+    else:
+        if len(dicc.keys()) > 0:
+            return bestchoice(dicc, hand, wordlen-1, word_list)
+        else:
+            defaultword = "."
+            print("sorry i dont know")
+            return defaultword
