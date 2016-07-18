@@ -19,6 +19,8 @@ def bestchoice(dicc, hand, wordlen, word_list):
                 return bestchoice(dicc, hand, wordlen, word_list)
             else:
                 del dicc[wordlen][maxscore]
+                if len(dicc[wordlen].keys()) == 0:
+                    del dicc[wordlen]
                 return bestchoice(dicc, hand, wordlen, word_list)
     else:
         if len(dicc.keys()) > 0:
