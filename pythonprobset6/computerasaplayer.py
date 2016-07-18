@@ -72,6 +72,7 @@ def playhand(hand, word_list, totalscore, totaltime, timelimit, enteredword,
     print("these are the hand letters ")
     print(hand)
     starttime = time.time()
+    wordlen = sum(hand.values())
     word = bestchoice(dicc, hand, wordlen, word_list)
     endtime = time.time()
     subtime = endtime-starttime
