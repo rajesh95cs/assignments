@@ -8,22 +8,22 @@ SCRABBLE_LETTER_VALUES = {
     'j': 2, 'k': 2, 'l': 1, 'm': 2, 'n': 1, 'o': 1, 'p': 2, 'q': 2, 'r': 1,
     's': 1, 't': 1, 'u': 1, 'v': 2, 'w': 1, 'x': 2, 'y': 2, 'z': 2
 }
-wordlen = 0
-nex = {}
-hand = {}
-score = 0
+# wordlen = 0
+# nex = {}
+# hand = {}
+# score = 0
 VOWELS = "aeiou"
 CONSONANTS = "bcdfghjklmnpqrstvwxyz"
-word = list()
-word_list = list()
-newhand = {}
-totaltime = 0
-starttime = 0
-endtime = 0
-subtime = 0
-enteredword = list()
-locdict = {}
-
+# word = list()
+# word_list = list()
+# newhand = {}
+# totaltime = 0
+# starttime = 0
+# endtime = 0
+# subtime = 0
+# enteredword = list()
+# locdict = {}
+# maxwordlength = 0
 
 
 def get_frequency_dict(word):
@@ -33,7 +33,7 @@ def get_frequency_dict(word):
     return freq
 
 
-def getwordmaxscore(word, SCRABBLE_LETTER_VALUES):
+def getwordmaxscore(word):
     valid = get_frequency_dict(word)
     temp = 0
     for i in word:
@@ -51,12 +51,12 @@ def load_words():
     return wordsa
 
 
-def pointdict(word_list):
+def pointdict():
     dicc = {}
     for i in range(len(word_list)):
         lenword = len(word_list[i])
         word = word_list[i]
-        wordmaxscore = getwordmaxscore(word, SCRABBLE_LETTER_VALUES)
+        wordmaxscore = getwordmaxscore(word)
         if lenword not in dicc.keys():
             dicc[lenword] = {wordmaxscore: [word]}
         else:
@@ -67,43 +67,48 @@ def pointdict(word_list):
     return dicc
 
 
-def is_validword(word, hand, word_list):
+def is_validword(word, hand):
     word_freq = get_frequency_dict(word)
-    if all(key in hand.keys() and word_freq[key] <= hand[key] for key in word_freq) and word in word_list:
+    if all(key in hand.keys() and word_freq[key] <= hand[key]
+            for key in word_freq) and word in word_list:
         print("it is present in the hand and it is a validword")
         return True
     return False
 
 
-def bestchoice(dicc, hand, wordlen, word_list):
+def bestchoice(dicc, hand, wordlen):
     print "wordlen = ", wordlen
     while wordlen > 1:
-        #print ("hi")
+        # print ("hi")
+        print "len(dicc[wordlen].keys()) = ", len(dicc[wordlen].keys())
         while len(dicc[wordlen].keys()) != 0:
-            #print("hello")
+            # print("hello")
             maxscore = max(dicc[wordlen].keys())
             for word in dicc[wordlen][maxscore]:
-                #print("is it working")
-                if is_validword(word, hand, word_list):
+                # print("is it working")
+                if is_validword(word, hand):
                     print(word)
                     return word
                 else:
                     dicc[wordlen][maxscore].remove(word)
             del dicc[wordlen][maxscore]
         del dicc[wordlen]
-        wordlen = wordlen - 1
-        print wordlen
+        wordlen -= 1
+        print "word length ", wordlen
     defaultword = "."
     print("sorry no word known")
     return defaultword
 
 
-def playhand(hand, word_list, totalscore,enteredword,
+def playhand(hand, totalscore, enteredword,
              dicc):
     print("these are the hand letters ")
     print(hand)
-    wordlen=sum(hand.values())
-    word = bestchoice(dicc, hand, wordlen, word_list)
+    # edited this
+    print "dicc.keys = ", dicc.keys()
+    maxwordlength = max(dicc.keys())
+    wordlen = min(sum(hand.values()), maxwordlength)
+    word = bestchoice(dicc, hand, wordlen)
     if word in enteredword:
         print("you are cheating gameover")
         return totalscore
@@ -115,14 +120,14 @@ def playhand(hand, word_list, totalscore,enteredword,
         if len(hand) == 1:
             return totalscore
         else:
-            isthere = is_validword(word, hand, word_list)
+            isthere = is_validword(word, hand)
             if isthere:
                 score = getwordscore(word, hand)
                 print("sub score= ", score)
-                totalscore = totalscore+score
+                totalscore += score
                 print("totalscore= ", totalscore)
                 hand = update_hand(hand, word)
-            return playhand(hand, word_list, totalscore,
+            return playhand(hand, totalscore,
                             enteredword, dicc)
 
 
@@ -136,10 +141,9 @@ def update_hand(hand, word):
     return hand
 
 
-
-
-def deal_hand(N, VOWELS, CONSONANTS, SCRABBLE_LETTER_VALUES):
+def deal_hand(N):
     num_vowels = N/3
+    hand = {}
     for i in range(num_vowels):
         x = VOWELS[random.randrange(0, len(VOWELS))]
         hand[x] = SCRABBLE_LETTER_VALUES.get(x, 0)+1
@@ -155,29 +159,38 @@ def getwordscore(word, hand):
     for i in word:
         temp = temp+valid[i]*hand[i]
     if cmp(valid.keys(), hand.keys()) == 0:
-        temp = temp+50
+        temp += 50
 
     return temp
 
-def playgame(word_list):
-    totscore = 0
+
+def playgame():
     totalscore = 0
+    enteredword = []
+    hand = []
     while True:
-        N = int(raw_input("enter the size of the hand"))
-        cmd = raw_input('Enter n to deal a new hand, r to replay the last hand,\
-                                 or e to end game: ')
+        dicc = pointdict()
+        cmd = raw_input('Enter n to deal a new hand, r to replay the last hand, '
+                        'e to end game: ')
         if cmd == 'n':
-            hand = deal_hand(N, VOWELS, CONSONANTS, SCRABBLE_LETTER_VALUES)
-            totscore = playhand(hand.copy(), word_list, totalscore,enteredword, dicc)
+            N = int(raw_input("enter the size of the hand: "))
+            hand = deal_hand(N)
+            totscore = playhand(hand, totalscore,
+                                enteredword, dicc)
             print(totscore)
         elif cmd == 'r':
-            totscore = playhand(hand.copy(), word_list, totalscore,enteredword, dicc)
+            if len(hand) == 0:
+                print " You need to choose n when you play first time"
+                continue
+            totscore = playhand(hand, totalscore,
+                                enteredword, dicc)
             print(totscore)
         elif cmd == 'e':
             break
         else:
             print "Invalid command."
-dicc = {}
+
+# dicc = {}
 word_list = load_words()
-dicc = pointdict(word_list)
-playgame(word_list)
+# dicc = pointdict(word_list)
+playgame()
