@@ -1,27 +1,28 @@
-class Stack(object):
+class stack(object):
     def __init__(self):
-        self.stack=[]
+        self.container = []
     def push(self,element):
-        self.stack.append(element)
+        self.container.append(element)
 
     def pop(self):
-        del self.stack[-1]
+        del self.contain[-1]
 
     def __str__(self):
-        for i in self.stack:
-            str(self.stack[-i])
+            return str(self.container)
 
 
     def __iter__(self):
-        return iter(self.stack)
+        return iter(self.container)
 
-    def isempty(self):
-        if len(self.stack) == 0:
+    def isempty():
+        if len(self.container) == 0:
             return True
         else:
             return False
-    def __eq__(self,other):
-        return type(other) == stack and cmp(self.stack,other.stack)==0
+    def __eq__(self , other):
+        return type(other) == stack and cmp(self.container,other.stack)==0
 
-    def add(self,other):
-        return self.stack = self.stack + other.stack.reverse()
+    def __add__(self , other):
+        netstack = stack()
+        netstack.container = self.container + other.container
+        return netstack

@@ -7,8 +7,8 @@ import stack
 from stack import *
 from string import *
 
-s1 = Stack()
-s2 = Stack()
+s1 = stack()
+s2 = stack()
 # filling first stack
 filename = 'list1.txt'
 inputFile = open(filename)
