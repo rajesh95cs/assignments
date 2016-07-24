@@ -21,11 +21,44 @@ class NODE(object):
     def __eq__(self,other):
         return type(other) == NODE and ( self.number == other.number and self.data == other.data )
 
-n1 = NODE(1,"hi")
-n2 = NODE(2,"hello")
-print n1
-print n1.getnumber
-print n2.getdata
-n2.setnumber = n1.getnumber
-n2.setdata(n1.getdata)
-print n1==n2
+class GRAPH(object):
+    def __init__(self,nodelist):
+        self.nodes=nodelist
+        self.graphconnection={}
+
+    def addedge(self,node1number,node2number):
+      if node1number < len(self.nodes) and node2number < len(self.nodes):
+          if node1number in self.graphconnection :
+              self.graphconnection[node1number].append(node2number)
+          else:
+              self.graphconnection[node1number]=[node2number]
+      else :
+           raise AttributeException("Nodenumber out of range")
+
+    def addnode(self,node):
+        return self.nodelist.append(node.setnumber(len(self.node)))
+
+    #def delnode(self,nodenumber):
+        #if nodenumber < len(self.nodes) :
+            #del self.nodes[nodenumber]
+            #del self.graphconnection[nodenumber]
+            #for nodesindex in self.graphconnection:
+
+    def getneighbours(self,nodenumber):
+        if nodenumber in graphconnection:
+           return self.graphconnection[nodenumber]
+       else:
+           return -1
+
+    def getnode(self,nodenumber):
+        if nodenumber < len(self.nodes):
+            return self.nodes[nodenumber]
+        else :
+            raise AttributeException("nodenumber out of range")
+
+    def __str__(self):
+        string = ''
+        for nodeindex in self.graphconnection:
+            string += "node " + str(nodeindex) + "--> " + "".join(["node " + str(i) + ", "]) for i in self.graphconnection[nodeindex]+"\n"
+        return string
+    
