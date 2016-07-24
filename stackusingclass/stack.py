@@ -1,4 +1,4 @@
-class stack(object):
+class Stack(object):
     def __init__(self):
         self.stack=[]
     def push(self,element):
@@ -25,5 +25,3 @@ class stack(object):
 
     def add(self,other):
         return self.stack = self.stack + other.stack.reverse()
-
-                   
