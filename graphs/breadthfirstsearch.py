@@ -1,26 +1,22 @@
+graph = {'A': ['B', 'C','E'],
+             'B': ['A','C', 'D'],
+             'C': ['D'],
+             'D': ['C'],
+             'E': ['F','D'],
+             'F': ['C']}
 import queue
+#import graphs
 from queue import *
-qu =
-graph = {}
-class CREATE(object):
-    def __init__(self):
-        self.graph = {}
+#from graphs import *
 
-    def creategraph(self,node1,node2):
-        for key in self.graph :
-            self.graph[key] == []
+qu = Queue()
+node = NODE()
+graph = GRAPH()
 
-        if node1 in self.graph and node2 in self.graph :
-            self.graph[node1].append(node2)
-            self.graph[node2].append(node1)
-        else :
-            self.graph[node1] = [node2]
-            self.graph[node2] = [node1]
-        return self.graph
-
-def searching(graph,start):
+def searching(graph,start,qu):
+    qu.enque([start])
     visited = graph[start]
-    qu = [start]
+
     while qu:
         vertex = qu[0]
         if vertex not in visited :
