@@ -45,10 +45,10 @@ class GRAPH(object):
             #for nodesindex in self.graphconnection:
 
     def getneighbours(self,nodenumber):
-        if nodenumber in graphconnection:
-           return self.graphconnection[nodenumber]
-       else:
-           return -1
+        if nodenumber in self.graphconnection:
+            return self.graphconnection[nodenumber]
+        else:
+            return -1
 
     def getnode(self,nodenumber):
         if nodenumber < len(self.nodes):
@@ -56,9 +56,16 @@ class GRAPH(object):
         else :
             raise AttributeException("nodenumber out of range")
 
-    def __str__(self):
+    def __str__(self, flag=None):
         string = ''
-        for nodeindex in self.graphconnection:
-            string += "node " + str(nodeindex) + "--> " + "".join(["node " + str(i) + ", "]) for i in self.graphconnection[nodeindex]+"\n"
+        if flag is None: # normal print
+            for nodeindex in self.graphconnection:
+                string += "node " + str(nodeindex) + " --> " +\
+                          "".join(["node " + str(i) + ", "
+                                   for i in self.graphconnection[nodeindex]]) + "\n"
+        if flag == 'data': # print using data
+            for nodeindex in self.graphconnection:
+                string += str(self.getnode(nodeindex).getdata()) + " --> " + \
+                          "".join([str(self.getnode(i).getdata()) + ", "
+                                   for i in self.graphconnection[nodeindex]]) + "\n"
         return string
-    
