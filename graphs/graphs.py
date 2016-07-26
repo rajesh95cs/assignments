@@ -45,7 +45,7 @@ class GRAPH(object):
             #for nodesindex in self.graphconnection:
 
     def getneighbours(self,nodenumber):
-        if nodenumber in self.graphconnection:
+        if nodenumber in self.graphconnection :
             return self.graphconnection[nodenumber]
         else:
             return -1
