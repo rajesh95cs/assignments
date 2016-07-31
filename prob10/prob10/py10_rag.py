@@ -17,7 +17,7 @@ HUMAN_SOLO = 0
 HUMAN_VS_HUMAN = 1
 HUMAN_VS_COMP = 2
 
-WORDLIST_FILENAME = "words.txt"
+WORDLIST_FILENAME = "samplewords.txt"
 
 def getFrequencyDict(sequence):
     """
