@@ -18,7 +18,7 @@ HUMAN_VS_COMP = 2
 wordlist = []
 
 
-WORDLIST_FILENAME = "samplewords.txt"
+WORDLIST_FILENAME = "words.txt"
 
 def getFrequencyDict(sequence):
     """
@@ -241,15 +241,17 @@ class ComputerPlayer(Player):
         returns: The best word (a string), given the computer player's hand and
         the wordlist
         """
-        print "is it working"
+        #print "is it working"
         choosedicc = {}
         wordlength = sum(self.hand.handDict.values())
-        print "wordlength = ", wordlength
+
         choosedicc = pointdict(wordlist.getList())
         wordlength = min(wordlength,max(choosedicc.keys()))
-        print "choosedicc = ",choosedicc
+        #print "max of keys ", max(choosedicc.keys())
+        #print "wordlength = ", wordlength
+        #print "choosedicc = ",choosedicc
         word = bestchoice(choosedicc, self.hand.handDict, wordlength, wordlist.getList())
-        print "word = ", word
+        #print "word = ", word
         return word
         # TODO
     def playHand(self, callback, wordlist):
@@ -269,14 +271,14 @@ def getwordmaxscore(word):
 
 def pointdict(wordlist):
     dicc = {}
-    print "working ?....."
+    #print "working ?....."
     for i in range(len(wordlist)):
-        print "wordlist = ",wordlist
+        #print "wordlist = ",wordlist
         lenword = len(wordlist[i])
         word = wordlist[i]
-        print word
+        #print word
         wordmaxscore = getwordmaxscore(word)
-        print "wordmaxscore = ",wordmaxscore
+        #print "wordmaxscore = ",wordmaxscore
         if lenword not in dicc.keys():
             dicc[lenword] = {wordmaxscore: [word]}
         else:
@@ -291,26 +293,29 @@ def is_validword(word, hand, wordlist):
     word_freq = getFrequencyDict(word)
     if all(key in hand.keys() and word_freq[key] <= hand[key]
             for key in word_freq) and word in wordlist:
-        print("it is present in the hand and it is a validword")
+        #print("it is present in the hand and it is a validword")
         return True
     else:
          return False
 
 
 def bestchoice(dicc, hand, wordlen, wordlist):
-    print "wordlen = ", wordlen
-    print dicc
+    #print "wordlen = ", wordlen
+    #print dicc
     while wordlen > 2:
+        if wordlen not in dicc:
+            wordlen =-1
+            continue
         #print ("hi")
-        print "len(dicc[wordlen].keys()) = ",len(dicc[wordlen])
+        #print "len(dicc[wordlen].keys()) = ",len(dicc[wordlen])
         while len(dicc[wordlen].keys()) != 0:
             #print("hello")
             maxscore = max(dicc[wordlen].keys())
-            print "maxscore = ",maxscore
+            #print "maxscore = ",maxscore
             for word in dicc[wordlen][maxscore]:
                 #print("is it working")
                 if is_validword(word, hand, wordlist):
-                    print(word)
+                    #print(word)
                     #print "word = ",word
                     return word
                 else:
@@ -318,9 +323,9 @@ def bestchoice(dicc, hand, wordlen, wordlist):
             del dicc[wordlen][maxscore]
         del dicc[wordlen]
         wordlen -= 1
-        print "word length ", wordlen
+        #print "word length ", wordlen
     defaultword = "."
-    print("ok I stop here")
+    #print("ok I stop here")
     return defaultword
 
 class HumanPlayer(Player):
