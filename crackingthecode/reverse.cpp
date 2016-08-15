@@ -2,24 +2,25 @@
 #include <iostream>
 #include <string>
 using namespace std;
-void reverse(const string& a);
+void reverse(char a[]);
 int main()
 {
-    string a;
+    char a[50];
     cout << " Please enter a string " << endl;
-    getline(cin, a);
+    cin>>a;
     reverse(a);
+    cout << " The reversed string is : " <<a<<endl;
     return 0;
 }
-void reverse(const string& a)
-{
-    size_t n = a.size();
-    if(n == 1)
-       cout << a << endl;
-    else
-    {
-       cout << a[n-1];
-       string b = a.substr(0, n-1);
-       reverse(b);
+void reverse(char a[])
+{   
+    int i;
+    for(i=0; a[i]!='\0'; i++);
+    int length = i;
+    char temp;
+    for(i=0; i < length/2; i++) {
+       temp = a[i];
+       a[i] = a[length-i-1];
+       a[length-i-1] = temp;
     }
 }
