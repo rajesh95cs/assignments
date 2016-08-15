@@ -62,6 +62,6 @@ def testAll():
     #testPlayer()
 
     #print 'PROBLEM 4 -----------------------------------------'
-    #testComputerPlayer()
+    testComputerPlayer()
 
 testAll()

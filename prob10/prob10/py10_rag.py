@@ -2,7 +2,8 @@
 
 import random
 import string
-from operator import itemgetter
+from itertools import combinations
+from itertools import chain
 
 # Global Constants
 VOWELS = 'aeiou'
@@ -242,31 +243,34 @@ class ComputerPlayer(Player):
         the wordlist
         """
         # TODO
+        # making the dictionary
         dicc = {}
-        for word in wordlist.getList():
+        max_word_len = 0
+        word_list = wordlist.getList()
+        for word in word_list:
+            # word = word_list[i]
+            if len(word) > max_word_len:
+                max_word_len = len(word)
             key = ''.join(sorted(word))
             if key in dicc.keys():
                 dicc[key].append(word)
             else:
                 dicc[key] = [word]
-        keys = dicc.keys()
-        keyscore_tuples = [(key, getWordScore(key)) for key in keys]
-        # sort the tuples in descending order based on score
-        keyscore_tuples = sorted(keyscore_tuples, key=itemgetter(1), reverse=True)
-        hand_length = sum(self.hand.handDict.values())
-        if len(keyscore_tuples) == 0:
-            return '.'
-        wordlen = min(hand_length, len(keyscore_tuples[0][0]))
-        # removing elements having word length greater than wordlen
-        while len(keyscore_tuples) > 0:
-            maxscore_element = keyscore_tuples[0]
-            if not self.hand.containsLetters(maxscore_element[0]):
-                keyscore_tuples.remove(maxscore_element)
-                continue
-            for word in dicc[maxscore_element[0]]:
-                if self.hand.containsLetters(word):
-                    return word
-            keyscore_tuples.remove(maxscore_element)
+        print "Dictionary done"
+        max_word_len = min(sum([self.hand.handDict[key] for key in self.hand.handDict]), max_word_len)
+        # picking the best word
+        # extracting the letters in hand to a list
+        hand_letter_list = [[key]*self.hand.handDict[key] for key in self.hand.handDict]
+        hand_letters = list(chain(*hand_letter_list))  # flattening the list
+        # subsets_hand_letters = sum([map(list, combinations(hand_letters, i)) for i in range(max_word_len + 1)], [])
+        # reverse the list to search from max word length
+        for i in range(max_word_len + 1, 1, -1):
+            subsets_hand_letters = map(list, combinations(hand_letters, i))
+            print "combinations done"
+            for subset in subsets_hand_letters:
+                sorted_subset = "".join(sorted(subset))
+                if sorted_subset in dicc:
+                    return dicc[sorted_subset][0]
         return '.'
 
     def playHand(self, callback, wordlist):
