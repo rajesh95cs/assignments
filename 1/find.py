@@ -1,6 +1,6 @@
 str="atgacatgcacaagtatgcat"
 ch="atgc"
-index=0
+index=1
 def find(str, ch):
     while index < len(str):
         if str[index] == ch:
